@@ -9,38 +9,214 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as PuppiesRouteImport } from './routes/puppies'
+import { Route as HealthGuaranteeRouteImport } from './routes/health-guarantee'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AdoptionProcessRouteImport } from './routes/adoption-process'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PuppiesSlugRouteImport } from './routes/puppies.$slug'
 
+const TestimonialsRoute = TestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PuppiesRoute = PuppiesRouteImport.update({
+  id: '/puppies',
+  path: '/puppies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthGuaranteeRoute = HealthGuaranteeRouteImport.update({
+  id: '/health-guarantee',
+  path: '/health-guarantee',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdoptionProcessRoute = AdoptionProcessRouteImport.update({
+  id: '/adoption-process',
+  path: '/adoption-process',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PuppiesSlugRoute = PuppiesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PuppiesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/adoption-process': typeof AdoptionProcessRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/gallery': typeof GalleryRoute
+  '/health-guarantee': typeof HealthGuaranteeRoute
+  '/puppies': typeof PuppiesRouteWithChildren
+  '/testimonials': typeof TestimonialsRoute
+  '/puppies/$slug': typeof PuppiesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/adoption-process': typeof AdoptionProcessRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/gallery': typeof GalleryRoute
+  '/health-guarantee': typeof HealthGuaranteeRoute
+  '/puppies': typeof PuppiesRouteWithChildren
+  '/testimonials': typeof TestimonialsRoute
+  '/puppies/$slug': typeof PuppiesSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/adoption-process': typeof AdoptionProcessRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/gallery': typeof GalleryRoute
+  '/health-guarantee': typeof HealthGuaranteeRoute
+  '/puppies': typeof PuppiesRouteWithChildren
+  '/testimonials': typeof TestimonialsRoute
+  '/puppies/$slug': typeof PuppiesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/adoption-process'
+    | '/contact'
+    | '/faq'
+    | '/gallery'
+    | '/health-guarantee'
+    | '/puppies'
+    | '/testimonials'
+    | '/puppies/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/adoption-process'
+    | '/contact'
+    | '/faq'
+    | '/gallery'
+    | '/health-guarantee'
+    | '/puppies'
+    | '/testimonials'
+    | '/puppies/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/adoption-process'
+    | '/contact'
+    | '/faq'
+    | '/gallery'
+    | '/health-guarantee'
+    | '/puppies'
+    | '/testimonials'
+    | '/puppies/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdoptionProcessRoute: typeof AdoptionProcessRoute
+  ContactRoute: typeof ContactRoute
+  FaqRoute: typeof FaqRoute
+  GalleryRoute: typeof GalleryRoute
+  HealthGuaranteeRoute: typeof HealthGuaranteeRoute
+  PuppiesRoute: typeof PuppiesRouteWithChildren
+  TestimonialsRoute: typeof TestimonialsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/testimonials': {
+      id: '/testimonials'
+      path: '/testimonials'
+      fullPath: '/testimonials'
+      preLoaderRoute: typeof TestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/puppies': {
+      id: '/puppies'
+      path: '/puppies'
+      fullPath: '/puppies'
+      preLoaderRoute: typeof PuppiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/health-guarantee': {
+      id: '/health-guarantee'
+      path: '/health-guarantee'
+      fullPath: '/health-guarantee'
+      preLoaderRoute: typeof HealthGuaranteeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/adoption-process': {
+      id: '/adoption-process'
+      path: '/adoption-process'
+      fullPath: '/adoption-process'
+      preLoaderRoute: typeof AdoptionProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +224,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/puppies/$slug': {
+      id: '/puppies/$slug'
+      path: '/$slug'
+      fullPath: '/puppies/$slug'
+      preLoaderRoute: typeof PuppiesSlugRouteImport
+      parentRoute: typeof PuppiesRoute
+    }
   }
 }
 
+interface PuppiesRouteChildren {
+  PuppiesSlugRoute: typeof PuppiesSlugRoute
+}
+
+const PuppiesRouteChildren: PuppiesRouteChildren = {
+  PuppiesSlugRoute: PuppiesSlugRoute,
+}
+
+const PuppiesRouteWithChildren =
+  PuppiesRoute._addFileChildren(PuppiesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdoptionProcessRoute: AdoptionProcessRoute,
+  ContactRoute: ContactRoute,
+  FaqRoute: FaqRoute,
+  GalleryRoute: GalleryRoute,
+  HealthGuaranteeRoute: HealthGuaranteeRoute,
+  PuppiesRoute: PuppiesRouteWithChildren,
+  TestimonialsRoute: TestimonialsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
