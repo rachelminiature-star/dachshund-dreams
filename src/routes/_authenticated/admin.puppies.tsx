@@ -117,15 +117,11 @@ function PuppyDialog({ open, value, onClose, onSave, saving }: {
   onSave: (v: typeof EMPTY) => void; saving: boolean;
 }) {
   const [v, setV] = useState<typeof EMPTY | null>(value);
-  // sync when value changes
-  if (open && value && (!v || v.id !== value.id || (!v.id && value.id === null && v !== value))) {
-    // initialize on open
-  }
-  // simple: reset when dialog opens
   if (open && value && v === null) setV(value);
   if (!open && v !== null) setV(null);
   if (!v) return null;
-  const set = <K extends keyof typeof EMPTY>(k: K, val: (typeof EMPTY)[K]) => setV({ ...v, [k]: val });
+  const current = v;
+  const set = <K extends keyof typeof EMPTY>(k: K, val: (typeof EMPTY)[K]) => setV({ ...current, [k]: val });
 
   async function handleUpload(file: File, target: "cover" | "gallery") {
     const path = `puppies/${Date.now()}-${file.name.replace(/[^a-z0-9.-]/gi, "_")}`;
@@ -133,10 +129,10 @@ function PuppyDialog({ open, value, onClose, onSave, saving }: {
     if (error) return toast.error(error.message);
     const { data: signed } = await supabase.storage.from("puppy-media").createSignedUrl(path, 60 * 60 * 24 * 365);
     if (!signed?.signedUrl) return toast.error("Could not get URL");
-    if (target === "cover") set("cover_image", signed.signedUrl);
-    else set("images", [...v.images, signed.signedUrl]);
+    setV((prev) => prev ? (target === "cover" ? { ...prev, cover_image: signed.signedUrl } : { ...prev, images: [...prev.images, signed.signedUrl] }) : prev);
     toast.success("Uploaded");
   }
+
 
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
