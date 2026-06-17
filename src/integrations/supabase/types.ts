@@ -14,16 +14,243 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      faqs: {
+        Row: {
+          answer: string
+          category: string
+          created_at: string
+          id: string
+          question: string
+          sort_order: number
+        }
+        Insert: {
+          answer: string
+          category?: string
+          created_at?: string
+          id?: string
+          question: string
+          sort_order?: number
+        }
+        Update: {
+          answer?: string
+          category?: string
+          created_at?: string
+          id?: string
+          question?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      gallery_images: {
+        Row: {
+          caption: string | null
+          category: string
+          created_at: string
+          height: number | null
+          id: string
+          sort_order: number
+          url: string
+          width: number | null
+        }
+        Insert: {
+          caption?: string | null
+          category?: string
+          created_at?: string
+          height?: number | null
+          id?: string
+          sort_order?: number
+          url: string
+          width?: number | null
+        }
+        Update: {
+          caption?: string | null
+          category?: string
+          created_at?: string
+          height?: number | null
+          id?: string
+          sort_order?: number
+          url?: string
+          width?: number | null
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          phone: string | null
+          puppy_id: string | null
+          read: boolean
+          subject: string | null
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          phone?: string | null
+          puppy_id?: string | null
+          read?: boolean
+          subject?: string | null
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          puppy_id?: string | null
+          read?: boolean
+          subject?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_puppy_id_fkey"
+            columns: ["puppy_id"]
+            isOneToOne: false
+            referencedRelation: "puppies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      puppies: {
+        Row: {
+          birth_date: string | null
+          characteristics: Json
+          coat: string | null
+          color: string
+          cover_image: string | null
+          created_at: string
+          description: string | null
+          featured: boolean
+          gender: string
+          id: string
+          images: string[]
+          name: string
+          parents: string | null
+          price_cents: number
+          slug: string
+          status: Database["public"]["Enums"]["puppy_status"]
+          updated_at: string
+          weight_estimate: string | null
+        }
+        Insert: {
+          birth_date?: string | null
+          characteristics?: Json
+          coat?: string | null
+          color: string
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean
+          gender: string
+          id?: string
+          images?: string[]
+          name: string
+          parents?: string | null
+          price_cents?: number
+          slug: string
+          status?: Database["public"]["Enums"]["puppy_status"]
+          updated_at?: string
+          weight_estimate?: string | null
+        }
+        Update: {
+          birth_date?: string | null
+          characteristics?: Json
+          coat?: string | null
+          color?: string
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          featured?: boolean
+          gender?: string
+          id?: string
+          images?: string[]
+          name?: string
+          parents?: string | null
+          price_cents?: number
+          slug?: string
+          status?: Database["public"]["Enums"]["puppy_status"]
+          updated_at?: string
+          weight_estimate?: string | null
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          author_location: string | null
+          author_name: string
+          body: string
+          created_at: string
+          featured: boolean
+          id: string
+          image_url: string | null
+          rating: number
+        }
+        Insert: {
+          author_location?: string | null
+          author_name: string
+          body: string
+          created_at?: string
+          featured?: boolean
+          id?: string
+          image_url?: string | null
+          rating?: number
+        }
+        Update: {
+          author_location?: string | null
+          author_name?: string
+          body?: string
+          created_at?: string
+          featured?: boolean
+          id?: string
+          image_url?: string | null
+          rating?: number
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      puppy_status: "available" | "reserved" | "sold"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +377,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      puppy_status: ["available", "reserved", "sold"],
+    },
   },
 } as const
