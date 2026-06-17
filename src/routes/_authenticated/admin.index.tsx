@@ -94,7 +94,7 @@ function DashboardPage() {
 
 function QuickLink({ to, icon: Icon, label }: { to: string; icon: any; label: string }) {
   return (
-    <Link to={to} className="flex items-center gap-3 rounded-xl border border-border px-4 py-3 hover:bg-accent transition-colors">
+    <Link to={to as any} className="flex items-center gap-3 rounded-xl border border-border px-4 py-3 hover:bg-accent transition-colors">
       <Icon className="h-4 w-4 text-muted-foreground" />
       <span className="text-sm font-medium">{label}</span>
     </Link>
