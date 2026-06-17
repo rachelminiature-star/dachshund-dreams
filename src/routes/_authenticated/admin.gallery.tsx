@@ -129,10 +129,12 @@ function BulkUploadDialog({ open, onOpenChange, existingCount, batchCreateFn, on
   const [category, setCategory] = useState("general");
   const [overall, setOverall] = useState<{ done: number; total: number; phase: "idle" | "uploading" | "creating" }>({ done: 0, total: 0, phase: "idle" });
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const filesRef = useRef(files);
+  filesRef.current = files;
 
   useEffect(() => {
     return () => {
-      files.forEach((f) => URL.revokeObjectURL(f.preview));
+      filesRef.current.forEach((f) => URL.revokeObjectURL(f.preview));
     };
   }, []);
 
