@@ -132,6 +132,8 @@ const gallerySchema = z.object({
   height: z.number().int().optional().nullable(),
 });
 
+const galleryBatchSchema = z.array(gallerySchema.omit({ id: true })).max(50);
+
 export const upsertGallery = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => gallerySchema.parse(d))
@@ -144,6 +146,16 @@ export const upsertGallery = createServerFn({ method: "POST" })
       : await sb.from("gallery_images").insert(row).select().single();
     if (res.error) throw new Error(res.error.message);
     return res.data;
+  });
+
+export const batchCreateGallery = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => galleryBatchSchema.parse(d))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { error } = await context.supabase.from("gallery_images").insert(data);
+    if (error) throw new Error(error.message);
+    return { inserted: data.length };
   });
 
 export const deleteGallery = createServerFn({ method: "POST" })
