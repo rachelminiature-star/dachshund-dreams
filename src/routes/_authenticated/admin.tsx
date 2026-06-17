@@ -53,7 +53,7 @@ function AdminLayout() {
             return (
               <Link
                 key={item.to}
-                to={item.to}
+                to={item.to as any}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                   active
@@ -94,7 +94,7 @@ function AdminLayout() {
             return (
               <Link
                 key={item.to}
-                to={item.to}
+                to={item.to as any}
                 className={cn(
                   "whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium",
                   active ? "bg-foreground text-background" : "text-muted-foreground"

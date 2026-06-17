@@ -54,7 +54,7 @@ function DashboardPage() {
         <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-xl">Recent Inquiries</h2>
-            <Link to="/admin/messages" className="text-sm text-muted-foreground hover:text-foreground">View all →</Link>
+            <Link to={"/admin/messages" as any} className="text-sm text-muted-foreground hover:text-foreground">View all →</Link>
           </div>
           <div className="space-y-3">
             {(messages ?? []).slice(0, 6).map((m: any) => (
