@@ -10,8 +10,8 @@ export const Route = createFileRoute("/_authenticated/admin/")({
 });
 
 function DashboardPage() {
-  const statsFn = useSrv(getAdminStats);
-  const messagesFn = useSrv(listMessages);
+  const statsFn = useServerFn(getAdminStats);
+  const messagesFn = useServerFn(listMessages);
   const { data: stats } = useQuery({ queryKey: ["admin", "stats"], queryFn: () => statsFn() });
   const { data: messages } = useQuery({ queryKey: ["admin", "messages"], queryFn: () => messagesFn() });
 
