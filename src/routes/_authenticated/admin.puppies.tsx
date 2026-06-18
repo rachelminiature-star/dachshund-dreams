@@ -196,30 +196,56 @@ function PuppyDialog({ open, value, onClose, onSave, saving }: {
               {v.cover_image && <img src={resolveImage(v.cover_image)} alt="" className="h-20 w-20 rounded-lg object-cover" />}
               <Input value={v.cover_image ?? ""} onChange={(e) => set("cover_image", e.target.value)} placeholder="Paste URL or upload" />
               <label className="cursor-pointer">
-                <input type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], "cover")} />
+                <input type="file" accept="image/*" hidden onChange={(e) => handleUpload(e.target.files, "cover")} />
                 <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-sm hover:bg-accent"><Upload className="h-3.5 w-3.5" />Upload</span>
               </label>
             </div>
           </div>
 
           <div className="sm:col-span-2 space-y-2">
-            <Label>Gallery images</Label>
+            <div className="flex items-center justify-between">
+              <Label>Gallery images</Label>
+              <span className="text-xs text-muted-foreground">{v.images.length} photo{v.images.length === 1 ? "" : "s"}</span>
+            </div>
             <div className="flex flex-wrap gap-2">
               {v.images.map((url, i) => (
                 <div key={i} className="relative group">
                   <img src={resolveImage(url)} alt="" className="h-20 w-20 rounded-lg object-cover" />
-                  <button onClick={() => set("images", v.images.filter((_, j) => j !== i))}
+                  <button type="button" onClick={() => set("images", v.images.filter((_, j) => j !== i))}
                     className="absolute -top-2 -right-2 grid h-6 w-6 place-items-center rounded-full bg-foreground text-background opacity-0 group-hover:opacity-100 transition">
                     <X className="h-3 w-3" />
                   </button>
                 </div>
               ))}
               <label className="cursor-pointer grid h-20 w-20 place-items-center rounded-lg border-2 border-dashed border-border text-muted-foreground hover:bg-accent">
-                <input type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], "gallery")} />
+                <input type="file" accept="image/*" multiple hidden onChange={(e) => handleUpload(e.target.files, "gallery")} />
                 <Upload className="h-5 w-5" />
               </label>
             </div>
           </div>
+
+          <div className="sm:col-span-2 space-y-2">
+            <div className="flex items-center justify-between">
+              <Label>Videos</Label>
+              <span className="text-xs text-muted-foreground">{v.videos.length} video{v.videos.length === 1 ? "" : "s"}</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {v.videos.map((url, i) => (
+                <div key={i} className="relative group">
+                  <video src={url} muted className="h-20 w-28 rounded-lg bg-black object-cover" />
+                  <button type="button" onClick={() => set("videos", v.videos.filter((_, j) => j !== i))}
+                    className="absolute -top-2 -right-2 grid h-6 w-6 place-items-center rounded-full bg-foreground text-background opacity-0 group-hover:opacity-100 transition">
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              <label className="cursor-pointer grid h-20 w-28 place-items-center rounded-lg border-2 border-dashed border-border text-muted-foreground hover:bg-accent">
+                <input type="file" accept="video/*" multiple hidden onChange={(e) => handleUpload(e.target.files, "videos")} />
+                <Upload className="h-5 w-5" />
+              </label>
+            </div>
+          </div>
+
 
           <div className="sm:col-span-2 flex items-center gap-3">
             <Switch checked={v.featured} onCheckedChange={(x) => set("featured", x)} />
