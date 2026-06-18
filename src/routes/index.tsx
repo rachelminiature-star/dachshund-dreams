@@ -306,14 +306,18 @@ function WhyChooseUs() {
 /* ----------------------- BREEDER STORY ----------------------- */
 
 function BreederStory() {
+  const { data: gallery } = useSuspenseQuery(galleryQuery());
+  const imgs = (gallery?.data ?? []) as any[];
+  const main = imgs[0]?.url ?? aboutImage;
+  const inset = imgs[1]?.url ?? breederImage;
   return (
     <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
       <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
         <Reveal className="relative">
           <div className="overflow-hidden rounded-3xl shadow-elegant">
             <img
-              src={aboutImage}
-              alt="Two black and tan miniature dachshund puppies in a wicker basket"
+              src={resolveImage(main)}
+              alt="Our miniature dachshunds at home"
               width={1280}
               height={1280}
               loading="lazy"
@@ -321,7 +325,7 @@ function BreederStory() {
             />
           </div>
           <div className="absolute -bottom-8 -right-4 hidden h-40 w-32 overflow-hidden rounded-2xl shadow-elegant lg:block">
-            <img src={breederImage} alt="Rachel holding a puppy" className="h-full w-full object-cover" />
+            <img src={resolveImage(inset)} alt="A puppy from our home" className="h-full w-full object-cover" />
           </div>
         </Reveal>
         <Reveal>
@@ -388,6 +392,9 @@ function ProcessSection() {
 /* -------------------------- HEALTH --------------------------- */
 
 function HealthSection() {
+  const { data: gallery } = useSuspenseQuery(galleryQuery());
+  const imgs = (gallery?.data ?? []) as any[];
+  const healthImg = imgs[2]?.url ?? "/src/assets/gallery-2.jpg";
   return (
     <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
       <div className="rounded-3xl gradient-warm p-8 sm:p-14">
@@ -416,7 +423,7 @@ function HealthSection() {
           </Reveal>
           <Reveal delay={0.1}>
             <div className="overflow-hidden rounded-3xl shadow-elegant">
-              <img src={resolveImage("/src/assets/gallery-2.jpg")} alt="A puppy being examined by a veterinarian" loading="lazy" className="aspect-[4/3] w-full object-cover" />
+              <img src={resolveImage(healthImg)} alt="One of our healthy miniature dachshund puppies" loading="lazy" className="aspect-[4/3] w-full object-cover" />
             </div>
           </Reveal>
         </div>
@@ -465,13 +472,16 @@ function TestimonialsSection() {
 /* ------------------------- GALLERY --------------------------- */
 
 function GalleryPreview() {
-  const imgs = ["/src/assets/puppy-1.jpg", "/src/assets/puppy-3.jpg", "/src/assets/puppy-5.jpg", "/src/assets/gallery-3.jpg", "/src/assets/puppy-4.jpg", "/src/assets/puppy-6.jpg"];
+  const { data } = useSuspenseQuery(galleryQuery());
+  const all = (data?.data ?? []) as any[];
+  const fallback = ["/src/assets/puppy-1.jpg", "/src/assets/puppy-3.jpg", "/src/assets/puppy-5.jpg", "/src/assets/gallery-3.jpg", "/src/assets/puppy-4.jpg", "/src/assets/puppy-6.jpg"];
+  const imgs = (all.length > 0 ? all.slice(0, 6).map((g) => g.url) : fallback);
   return (
     <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
       <SectionHeader eyebrow="Gallery" title="Moments from our home" />
       <StaggerGroup className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
         {imgs.map((url, i) => (
-          <StaggerItem key={url}>
+          <StaggerItem key={`${url}-${i}`}>
             <div className={cn("group overflow-hidden rounded-2xl bg-muted", i % 3 === 0 ? "aspect-square" : "aspect-[3/4]")}>
               <img src={resolveImage(url)} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
             </div>
