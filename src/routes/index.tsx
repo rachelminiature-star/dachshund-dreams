@@ -11,6 +11,7 @@ import {
   Star,
   Award,
   Sparkles,
+  ShoppingBag,
 } from "lucide-react";
 
 import { SiteLayout } from "@/components/site-layout";
@@ -19,7 +20,9 @@ import { SectionHeader, Eyebrow } from "@/components/section-header";
 import { puppiesQuery, testimonialsQuery, faqsQuery, galleryQuery } from "@/lib/queries";
 import { resolveImage, heroImage, aboutImage, breederImage } from "@/lib/images";
 import { formatPrice, puppyAge, SITE } from "@/lib/site";
+import { useCart } from "@/lib/cart";
 import { cn } from "@/lib/utils";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
