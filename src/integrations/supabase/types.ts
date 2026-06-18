@@ -137,6 +137,7 @@ export type Database = {
           slug: string
           status: Database["public"]["Enums"]["puppy_status"]
           updated_at: string
+          videos: string[]
           weight_estimate: string | null
         }
         Insert: {
@@ -157,6 +158,7 @@ export type Database = {
           slug: string
           status?: Database["public"]["Enums"]["puppy_status"]
           updated_at?: string
+          videos?: string[]
           weight_estimate?: string | null
         }
         Update: {
@@ -177,6 +179,7 @@ export type Database = {
           slug?: string
           status?: Database["public"]["Enums"]["puppy_status"]
           updated_at?: string
+          videos?: string[]
           weight_estimate?: string | null
         }
         Relationships: []
