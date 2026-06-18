@@ -26,9 +26,10 @@ const EMPTY = {
   name: "", slug: "", gender: "female" as "male" | "female",
   color: "", coat: "", status: "available" as "available" | "reserved" | "sold",
   birth_date: "", price_cents: 350000, weight_estimate: "", parents: "",
-  description: "", cover_image: "", images: [] as string[], featured: false,
+  description: "", cover_image: "", images: [] as string[], videos: [] as string[], featured: false,
   characteristics: {} as Record<string, any>,
 };
+
 
 function PuppiesAdmin() {
   const listFn = useServerFn(listPuppies);
