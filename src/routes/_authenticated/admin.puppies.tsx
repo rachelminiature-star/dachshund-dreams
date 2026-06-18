@@ -124,15 +124,35 @@ function PuppyDialog({ open, value, onClose, onSave, saving }: {
   const current = v;
   const set = <K extends keyof typeof EMPTY>(k: K, val: (typeof EMPTY)[K]) => setV({ ...current, [k]: val });
 
-  async function handleUpload(file: File, target: "cover" | "gallery") {
-    const path = `puppies/${Date.now()}-${file.name.replace(/[^a-z0-9.-]/gi, "_")}`;
-    const { error } = await supabase.storage.from("puppy-media").upload(path, file, { upsert: false });
-    if (error) return toast.error(error.message);
+  async function uploadOne(file: File): Promise<string | null> {
+    const path = `puppies/${Date.now()}-${Math.random().toString(36).slice(2, 6)}-${file.name.replace(/[^a-z0-9.-]/gi, "_")}`;
+    const { error } = await supabase.storage.from("puppy-media").upload(path, file, { upsert: false, contentType: file.type });
+    if (error) { toast.error(error.message); return null; }
     const { data: signed } = await supabase.storage.from("puppy-media").createSignedUrl(path, 60 * 60 * 24 * 365);
-    if (!signed?.signedUrl) return toast.error("Could not get URL");
-    setV((prev) => prev ? (target === "cover" ? { ...prev, cover_image: signed.signedUrl } : { ...prev, images: [...prev.images, signed.signedUrl] }) : prev);
-    toast.success("Uploaded");
+    return signed?.signedUrl ?? null;
   }
+
+  async function handleUpload(files: FileList | null, target: "cover" | "gallery" | "videos") {
+    if (!files || files.length === 0) return;
+    const arr = Array.from(files);
+    if (target === "cover") {
+      const url = await uploadOne(arr[0]);
+      if (url) setV((prev) => prev ? { ...prev, cover_image: url } : prev);
+      toast.success("Cover uploaded");
+      return;
+    }
+    toast.message(`Uploading ${arr.length} file${arr.length > 1 ? "s" : ""}…`);
+    const urls = (await Promise.all(arr.map(uploadOne))).filter(Boolean) as string[];
+    if (urls.length === 0) return;
+    setV((prev) => {
+      if (!prev) return prev;
+      return target === "gallery"
+        ? { ...prev, images: [...prev.images, ...urls] }
+        : { ...prev, videos: [...prev.videos, ...urls] };
+    });
+    toast.success(`${urls.length} uploaded`);
+  }
+
 
 
   return (
