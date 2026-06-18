@@ -91,10 +91,12 @@ const puppySchema = z.object({
   parents: z.string().max(160).optional().nullable(),
   description: z.string().max(4000).optional().nullable(),
   cover_image: z.string().max(500).optional().nullable(),
-  images: z.array(z.string()).max(20).default([]),
+  images: z.array(z.string()).max(40).default([]),
+  videos: z.array(z.string()).max(20).default([]),
   featured: z.boolean().default(false),
   characteristics: z.record(z.string(), z.any()).default({}),
 });
+
 
 export const upsertPuppy = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
