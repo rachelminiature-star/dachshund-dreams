@@ -238,40 +238,62 @@ function FeaturedPuppies() {
 }
 
 export function PuppyCard({ puppy }: { puppy: any }) {
+  const cart = useCart();
   const statusStyles: Record<string, string> = {
     available: "bg-sage/15 text-[oklch(0.42_0.06_145)]",
     reserved: "bg-sand/20 text-sand-dark",
     sold: "bg-muted text-muted-foreground",
   };
+  const sold = puppy.status === "sold";
   return (
-    <Link
-      to="/puppies/$slug"
-      params={{ slug: puppy.slug }}
-      className="group block overflow-hidden rounded-3xl bg-card shadow-soft ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-elegant"
-    >
-      <div className="relative aspect-[4/5] overflow-hidden bg-muted">
-        <img
-          src={resolveImage(puppy.cover_image)}
-          alt={`${puppy.name} the ${puppy.color} miniature dachshund`}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-        />
-        <span className={cn("absolute left-4 top-4 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em]", statusStyles[puppy.status])}>
-          {puppy.status}
-        </span>
-      </div>
-      <div className="space-y-3 p-6">
-        <div className="flex items-baseline justify-between gap-3">
-          <h3 className="font-display text-2xl text-foreground">{puppy.name}</h3>
-          <span className="text-sm font-medium text-sand-dark">{formatPrice(puppy.price_cents)}</span>
+    <div className="group relative overflow-hidden rounded-3xl bg-card shadow-soft ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-elegant">
+      <Link to="/puppies/$slug" params={{ slug: puppy.slug }} className="block">
+        <div className="relative aspect-[4/5] overflow-hidden bg-muted">
+          <img
+            src={resolveImage(puppy.cover_image)}
+            alt={`${puppy.name} the ${puppy.color} miniature dachshund`}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          />
+          <span className={cn("absolute left-4 top-4 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em]", statusStyles[puppy.status])}>
+            {puppy.status}
+          </span>
         </div>
-        <p className="text-sm text-muted-foreground">
-          {puppy.gender === "male" ? "Boy" : "Girl"} · {puppy.color} · {puppyAge(puppy.birth_date)}
-        </p>
+        <div className="space-y-3 p-6 pb-4">
+          <div className="flex items-baseline justify-between gap-3">
+            <h3 className="font-display text-2xl text-foreground">{puppy.name}</h3>
+            <span className="text-sm font-medium text-sand-dark">{formatPrice(puppy.price_cents)}</span>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {puppy.gender === "male" ? "Boy" : "Girl"} · {puppy.color} · {puppyAge(puppy.birth_date)}
+          </p>
+        </div>
+      </Link>
+      <div className="flex gap-2 px-6 pb-6">
+        <Link
+          to="/puppies/$slug"
+          params={{ slug: puppy.slug }}
+          className="inline-flex flex-1 items-center justify-center rounded-full bg-foreground px-4 py-2.5 text-xs font-medium text-background hover:bg-foreground/90"
+        >
+          View details
+        </Link>
+        <button
+          onClick={() => {
+            if (sold) return;
+            cart.add({ id: puppy.id, slug: puppy.slug, name: puppy.name, price_cents: puppy.price_cents, image: puppy.cover_image, color: puppy.color, gender: puppy.gender });
+            cart.setOpen(true);
+          }}
+          disabled={sold}
+          aria-label="Add to cart"
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-accent disabled:opacity-40"
+        >
+          <ShoppingBag className="h-4 w-4" />
+        </button>
       </div>
-    </Link>
+    </div>
   );
 }
+
 
 /* -------------------------- WHY US --------------------------- */
 
