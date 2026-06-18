@@ -26,9 +26,10 @@ const EMPTY = {
   name: "", slug: "", gender: "female" as "male" | "female",
   color: "", coat: "", status: "available" as "available" | "reserved" | "sold",
   birth_date: "", price_cents: 350000, weight_estimate: "", parents: "",
-  description: "", cover_image: "", images: [] as string[], featured: false,
+  description: "", cover_image: "", images: [] as string[], videos: [] as string[], featured: false,
   characteristics: {} as Record<string, any>,
 };
+
 
 function PuppiesAdmin() {
   const listFn = useServerFn(listPuppies);
@@ -89,7 +90,7 @@ function PuppiesAdmin() {
                 <div className="text-sm font-medium">{formatPrice(p.price_cents)}</div>
               </div>
               <div className="mt-3 flex gap-2">
-                <Button size="sm" variant="outline" className="flex-1" onClick={() => setEditing({ ...EMPTY, ...p, images: p.images ?? [], characteristics: p.characteristics ?? {}, birth_date: p.birth_date ?? "" })}>
+                <Button size="sm" variant="outline" className="flex-1" onClick={() => setEditing({ ...EMPTY, ...p, images: p.images ?? [], videos: p.videos ?? [], characteristics: p.characteristics ?? {}, birth_date: p.birth_date ?? "" })}>
                   <Pencil className="h-3.5 w-3.5 mr-1.5" /> Edit
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => { if (confirm(`Delete ${p.name}?`)) delMut.mutate(p.id); }}>
@@ -123,15 +124,35 @@ function PuppyDialog({ open, value, onClose, onSave, saving }: {
   const current = v;
   const set = <K extends keyof typeof EMPTY>(k: K, val: (typeof EMPTY)[K]) => setV({ ...current, [k]: val });
 
-  async function handleUpload(file: File, target: "cover" | "gallery") {
-    const path = `puppies/${Date.now()}-${file.name.replace(/[^a-z0-9.-]/gi, "_")}`;
-    const { error } = await supabase.storage.from("puppy-media").upload(path, file, { upsert: false });
-    if (error) return toast.error(error.message);
+  async function uploadOne(file: File): Promise<string | null> {
+    const path = `puppies/${Date.now()}-${Math.random().toString(36).slice(2, 6)}-${file.name.replace(/[^a-z0-9.-]/gi, "_")}`;
+    const { error } = await supabase.storage.from("puppy-media").upload(path, file, { upsert: false, contentType: file.type });
+    if (error) { toast.error(error.message); return null; }
     const { data: signed } = await supabase.storage.from("puppy-media").createSignedUrl(path, 60 * 60 * 24 * 365);
-    if (!signed?.signedUrl) return toast.error("Could not get URL");
-    setV((prev) => prev ? (target === "cover" ? { ...prev, cover_image: signed.signedUrl } : { ...prev, images: [...prev.images, signed.signedUrl] }) : prev);
-    toast.success("Uploaded");
+    return signed?.signedUrl ?? null;
   }
+
+  async function handleUpload(files: FileList | null, target: "cover" | "gallery" | "videos") {
+    if (!files || files.length === 0) return;
+    const arr = Array.from(files);
+    if (target === "cover") {
+      const url = await uploadOne(arr[0]);
+      if (url) setV((prev) => prev ? { ...prev, cover_image: url } : prev);
+      toast.success("Cover uploaded");
+      return;
+    }
+    toast.message(`Uploading ${arr.length} file${arr.length > 1 ? "s" : ""}…`);
+    const urls = (await Promise.all(arr.map(uploadOne))).filter(Boolean) as string[];
+    if (urls.length === 0) return;
+    setV((prev) => {
+      if (!prev) return prev;
+      return target === "gallery"
+        ? { ...prev, images: [...prev.images, ...urls] }
+        : { ...prev, videos: [...prev.videos, ...urls] };
+    });
+    toast.success(`${urls.length} uploaded`);
+  }
+
 
 
   return (
@@ -175,30 +196,56 @@ function PuppyDialog({ open, value, onClose, onSave, saving }: {
               {v.cover_image && <img src={resolveImage(v.cover_image)} alt="" className="h-20 w-20 rounded-lg object-cover" />}
               <Input value={v.cover_image ?? ""} onChange={(e) => set("cover_image", e.target.value)} placeholder="Paste URL or upload" />
               <label className="cursor-pointer">
-                <input type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], "cover")} />
+                <input type="file" accept="image/*" hidden onChange={(e) => handleUpload(e.target.files, "cover")} />
                 <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-sm hover:bg-accent"><Upload className="h-3.5 w-3.5" />Upload</span>
               </label>
             </div>
           </div>
 
           <div className="sm:col-span-2 space-y-2">
-            <Label>Gallery images</Label>
+            <div className="flex items-center justify-between">
+              <Label>Gallery images</Label>
+              <span className="text-xs text-muted-foreground">{v.images.length} photo{v.images.length === 1 ? "" : "s"}</span>
+            </div>
             <div className="flex flex-wrap gap-2">
               {v.images.map((url, i) => (
                 <div key={i} className="relative group">
                   <img src={resolveImage(url)} alt="" className="h-20 w-20 rounded-lg object-cover" />
-                  <button onClick={() => set("images", v.images.filter((_, j) => j !== i))}
+                  <button type="button" onClick={() => set("images", v.images.filter((_, j) => j !== i))}
                     className="absolute -top-2 -right-2 grid h-6 w-6 place-items-center rounded-full bg-foreground text-background opacity-0 group-hover:opacity-100 transition">
                     <X className="h-3 w-3" />
                   </button>
                 </div>
               ))}
               <label className="cursor-pointer grid h-20 w-20 place-items-center rounded-lg border-2 border-dashed border-border text-muted-foreground hover:bg-accent">
-                <input type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], "gallery")} />
+                <input type="file" accept="image/*" multiple hidden onChange={(e) => handleUpload(e.target.files, "gallery")} />
                 <Upload className="h-5 w-5" />
               </label>
             </div>
           </div>
+
+          <div className="sm:col-span-2 space-y-2">
+            <div className="flex items-center justify-between">
+              <Label>Videos</Label>
+              <span className="text-xs text-muted-foreground">{v.videos.length} video{v.videos.length === 1 ? "" : "s"}</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {v.videos.map((url, i) => (
+                <div key={i} className="relative group">
+                  <video src={url} muted className="h-20 w-28 rounded-lg bg-black object-cover" />
+                  <button type="button" onClick={() => set("videos", v.videos.filter((_, j) => j !== i))}
+                    className="absolute -top-2 -right-2 grid h-6 w-6 place-items-center rounded-full bg-foreground text-background opacity-0 group-hover:opacity-100 transition">
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              <label className="cursor-pointer grid h-20 w-28 place-items-center rounded-lg border-2 border-dashed border-border text-muted-foreground hover:bg-accent">
+                <input type="file" accept="video/*" multiple hidden onChange={(e) => handleUpload(e.target.files, "videos")} />
+                <Upload className="h-5 w-5" />
+              </label>
+            </div>
+          </div>
+
 
           <div className="sm:col-span-2 flex items-center gap-3">
             <Switch checked={v.featured} onCheckedChange={(x) => set("featured", x)} />

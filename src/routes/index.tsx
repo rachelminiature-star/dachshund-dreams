@@ -11,6 +11,7 @@ import {
   Star,
   Award,
   Sparkles,
+  ShoppingBag,
 } from "lucide-react";
 
 import { SiteLayout } from "@/components/site-layout";
@@ -19,7 +20,9 @@ import { SectionHeader, Eyebrow } from "@/components/section-header";
 import { puppiesQuery, testimonialsQuery, faqsQuery, galleryQuery } from "@/lib/queries";
 import { resolveImage, heroImage, aboutImage, breederImage } from "@/lib/images";
 import { formatPrice, puppyAge, SITE } from "@/lib/site";
+import { useCart } from "@/lib/cart";
 import { cn } from "@/lib/utils";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -85,19 +88,24 @@ function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], reduced ? ["0%", "0%"] : ["0%", "18%"]);
   const scale = useTransform(scrollYProgress, [0, 1], reduced ? [1, 1] : [1, 1.08]);
 
+  const { data: gallery } = useSuspenseQuery(galleryQuery());
+  const imgs = (gallery?.data ?? []) as any[];
+  const heroSrc = imgs[0]?.url ? resolveImage(imgs[0].url) : heroImage;
+
   const headline = ["Heirloom", "miniature", "dachshunds."];
 
   return (
     <section ref={ref} className="relative isolate min-h-dvh w-full overflow-hidden bg-foreground">
       <motion.div className="absolute inset-0 -z-10" style={{ y, scale }}>
         <img
-          src={heroImage}
+          src={heroSrc}
           alt="A red long-haired miniature dachshund puppy in warm golden light"
           className="h-full w-full object-cover"
           width={1920}
           height={1280}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/15 to-foreground/65" />
+
       </motion.div>
 
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-7xl flex-col justify-end px-4 pb-16 pt-32 sm:px-6 sm:pb-24 sm:pt-40 lg:px-8 lg:pb-32">
@@ -233,40 +241,62 @@ function FeaturedPuppies() {
 }
 
 export function PuppyCard({ puppy }: { puppy: any }) {
+  const cart = useCart();
   const statusStyles: Record<string, string> = {
     available: "bg-sage/15 text-[oklch(0.42_0.06_145)]",
     reserved: "bg-sand/20 text-sand-dark",
     sold: "bg-muted text-muted-foreground",
   };
+  const sold = puppy.status === "sold";
   return (
-    <Link
-      to="/puppies/$slug"
-      params={{ slug: puppy.slug }}
-      className="group block overflow-hidden rounded-3xl bg-card shadow-soft ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-elegant"
-    >
-      <div className="relative aspect-[4/5] overflow-hidden bg-muted">
-        <img
-          src={resolveImage(puppy.cover_image)}
-          alt={`${puppy.name} the ${puppy.color} miniature dachshund`}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-        />
-        <span className={cn("absolute left-4 top-4 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em]", statusStyles[puppy.status])}>
-          {puppy.status}
-        </span>
-      </div>
-      <div className="space-y-3 p-6">
-        <div className="flex items-baseline justify-between gap-3">
-          <h3 className="font-display text-2xl text-foreground">{puppy.name}</h3>
-          <span className="text-sm font-medium text-sand-dark">{formatPrice(puppy.price_cents)}</span>
+    <div className="group relative overflow-hidden rounded-3xl bg-card shadow-soft ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-elegant">
+      <Link to="/puppies/$slug" params={{ slug: puppy.slug }} className="block">
+        <div className="relative aspect-[4/5] overflow-hidden bg-muted">
+          <img
+            src={resolveImage(puppy.cover_image)}
+            alt={`${puppy.name} the ${puppy.color} miniature dachshund`}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          />
+          <span className={cn("absolute left-4 top-4 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em]", statusStyles[puppy.status])}>
+            {puppy.status}
+          </span>
         </div>
-        <p className="text-sm text-muted-foreground">
-          {puppy.gender === "male" ? "Boy" : "Girl"} · {puppy.color} · {puppyAge(puppy.birth_date)}
-        </p>
+        <div className="space-y-3 p-6 pb-4">
+          <div className="flex items-baseline justify-between gap-3">
+            <h3 className="font-display text-2xl text-foreground">{puppy.name}</h3>
+            <span className="text-sm font-medium text-sand-dark">{formatPrice(puppy.price_cents)}</span>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {puppy.gender === "male" ? "Boy" : "Girl"} · {puppy.color} · {puppyAge(puppy.birth_date)}
+          </p>
+        </div>
+      </Link>
+      <div className="flex gap-2 px-6 pb-6">
+        <Link
+          to="/puppies/$slug"
+          params={{ slug: puppy.slug }}
+          className="inline-flex flex-1 items-center justify-center rounded-full bg-foreground px-4 py-2.5 text-xs font-medium text-background hover:bg-foreground/90"
+        >
+          View details
+        </Link>
+        <button
+          onClick={() => {
+            if (sold) return;
+            cart.add({ id: puppy.id, slug: puppy.slug, name: puppy.name, price_cents: puppy.price_cents, image: puppy.cover_image, color: puppy.color, gender: puppy.gender });
+            cart.setOpen(true);
+          }}
+          disabled={sold}
+          aria-label="Add to cart"
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-accent disabled:opacity-40"
+        >
+          <ShoppingBag className="h-4 w-4" />
+        </button>
       </div>
-    </Link>
+    </div>
   );
 }
+
 
 /* -------------------------- WHY US --------------------------- */
 
