@@ -25,13 +25,13 @@ export function SiteNav({ transparentOnTop = false }: { transparentOnTop?: boole
     };
   }, [open]);
 
-  const solid = scrolled || !transparentOnTop;
+  const solid = scrolled || !transparentOnTop || open;
 
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        solid ? "glass-strong shadow-soft" : "bg-transparent"
+        solid ? "bg-background/95 backdrop-blur-md shadow-soft border-b border-border" : "bg-transparent"
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:h-20 sm:px-6 lg:px-8">
