@@ -16,7 +16,7 @@ import {
 import { SiteLayout } from "@/components/site-layout";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion";
 import { SectionHeader, Eyebrow } from "@/components/section-header";
-import { puppiesQuery, testimonialsQuery, faqsQuery } from "@/lib/queries";
+import { puppiesQuery, testimonialsQuery, faqsQuery, galleryQuery } from "@/lib/queries";
 import { resolveImage, heroImage, aboutImage, breederImage } from "@/lib/images";
 import { formatPrice, puppyAge, SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -52,6 +52,7 @@ export const Route = createFileRoute("/")({
       context.queryClient.ensureQueryData(puppiesQuery()),
       context.queryClient.ensureQueryData(testimonialsQuery()),
       context.queryClient.ensureQueryData(faqsQuery()),
+      context.queryClient.ensureQueryData(galleryQuery()),
     ]);
   },
   component: HomePage,
