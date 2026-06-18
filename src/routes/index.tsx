@@ -85,19 +85,24 @@ function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], reduced ? ["0%", "0%"] : ["0%", "18%"]);
   const scale = useTransform(scrollYProgress, [0, 1], reduced ? [1, 1] : [1, 1.08]);
 
+  const { data: gallery } = useSuspenseQuery(galleryQuery());
+  const imgs = (gallery?.data ?? []) as any[];
+  const heroSrc = imgs[0]?.url ? resolveImage(imgs[0].url) : heroImage;
+
   const headline = ["Heirloom", "miniature", "dachshunds."];
 
   return (
     <section ref={ref} className="relative isolate min-h-dvh w-full overflow-hidden bg-foreground">
       <motion.div className="absolute inset-0 -z-10" style={{ y, scale }}>
         <img
-          src={heroImage}
+          src={heroSrc}
           alt="A red long-haired miniature dachshund puppy in warm golden light"
           className="h-full w-full object-cover"
           width={1920}
           height={1280}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/15 to-foreground/65" />
+
       </motion.div>
 
       <div className="relative z-10 mx-auto flex min-h-dvh max-w-7xl flex-col justify-end px-4 pb-16 pt-32 sm:px-6 sm:pb-24 sm:pt-40 lg:px-8 lg:pb-32">
