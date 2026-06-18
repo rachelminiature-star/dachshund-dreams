@@ -90,7 +90,7 @@ function PuppiesAdmin() {
                 <div className="text-sm font-medium">{formatPrice(p.price_cents)}</div>
               </div>
               <div className="mt-3 flex gap-2">
-                <Button size="sm" variant="outline" className="flex-1" onClick={() => setEditing({ ...EMPTY, ...p, images: p.images ?? [], characteristics: p.characteristics ?? {}, birth_date: p.birth_date ?? "" })}>
+                <Button size="sm" variant="outline" className="flex-1" onClick={() => setEditing({ ...EMPTY, ...p, images: p.images ?? [], videos: p.videos ?? [], characteristics: p.characteristics ?? {}, birth_date: p.birth_date ?? "" })}>
                   <Pencil className="h-3.5 w-3.5 mr-1.5" /> Edit
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => { if (confirm(`Delete ${p.name}?`)) delMut.mutate(p.id); }}>
