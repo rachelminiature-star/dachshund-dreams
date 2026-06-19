@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as PuppiesRouteImport } from './routes/puppies'
 import { Route as HealthGuaranteeRouteImport } from './routes/health-guarantee'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -21,6 +20,7 @@ import { Route as AdoptionProcessRouteImport } from './routes/adoption-process'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PuppiesIndexRouteImport } from './routes/puppies.index'
 import { Route as PuppiesSlugRouteImport } from './routes/puppies.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
@@ -38,11 +38,6 @@ const TestimonialsRoute = TestimonialsRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PuppiesRoute = PuppiesRouteImport.update({
-  id: '/puppies',
-  path: '/puppies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HealthGuaranteeRoute = HealthGuaranteeRouteImport.update({
@@ -89,10 +84,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PuppiesIndexRoute = PuppiesIndexRouteImport.update({
+  id: '/puppies/',
+  path: '/puppies/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PuppiesSlugRoute = PuppiesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => PuppiesRoute,
+  id: '/puppies/$slug',
+  path: '/puppies/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
@@ -143,11 +143,11 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/health-guarantee': typeof HealthGuaranteeRoute
-  '/puppies': typeof PuppiesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/puppies/$slug': typeof PuppiesSlugRoute
+  '/puppies/': typeof PuppiesIndexRoute
   '/admin/faqs': typeof AuthenticatedAdminFaqsRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryRoute
   '/admin/messages': typeof AuthenticatedAdminMessagesRoute
@@ -164,10 +164,10 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/health-guarantee': typeof HealthGuaranteeRoute
-  '/puppies': typeof PuppiesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/testimonials': typeof TestimonialsRoute
   '/puppies/$slug': typeof PuppiesSlugRoute
+  '/puppies': typeof PuppiesIndexRoute
   '/admin/faqs': typeof AuthenticatedAdminFaqsRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryRoute
   '/admin/messages': typeof AuthenticatedAdminMessagesRoute
@@ -186,11 +186,11 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/health-guarantee': typeof HealthGuaranteeRoute
-  '/puppies': typeof PuppiesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/testimonials': typeof TestimonialsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/puppies/$slug': typeof PuppiesSlugRoute
+  '/puppies/': typeof PuppiesIndexRoute
   '/_authenticated/admin/faqs': typeof AuthenticatedAdminFaqsRoute
   '/_authenticated/admin/gallery': typeof AuthenticatedAdminGalleryRoute
   '/_authenticated/admin/messages': typeof AuthenticatedAdminMessagesRoute
@@ -209,11 +209,11 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/health-guarantee'
-    | '/puppies'
     | '/sitemap.xml'
     | '/testimonials'
     | '/admin'
     | '/puppies/$slug'
+    | '/puppies/'
     | '/admin/faqs'
     | '/admin/gallery'
     | '/admin/messages'
@@ -230,10 +230,10 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/health-guarantee'
-    | '/puppies'
     | '/sitemap.xml'
     | '/testimonials'
     | '/puppies/$slug'
+    | '/puppies'
     | '/admin/faqs'
     | '/admin/gallery'
     | '/admin/messages'
@@ -251,11 +251,11 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/health-guarantee'
-    | '/puppies'
     | '/sitemap.xml'
     | '/testimonials'
     | '/_authenticated/admin'
     | '/puppies/$slug'
+    | '/puppies/'
     | '/_authenticated/admin/faqs'
     | '/_authenticated/admin/gallery'
     | '/_authenticated/admin/messages'
@@ -274,9 +274,10 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   GalleryRoute: typeof GalleryRoute
   HealthGuaranteeRoute: typeof HealthGuaranteeRoute
-  PuppiesRoute: typeof PuppiesRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TestimonialsRoute: typeof TestimonialsRoute
+  PuppiesSlugRoute: typeof PuppiesSlugRoute
+  PuppiesIndexRoute: typeof PuppiesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -293,13 +294,6 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/puppies': {
-      id: '/puppies'
-      path: '/puppies'
-      fullPath: '/puppies'
-      preLoaderRoute: typeof PuppiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/health-guarantee': {
@@ -365,12 +359,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/puppies/': {
+      id: '/puppies/'
+      path: '/puppies'
+      fullPath: '/puppies/'
+      preLoaderRoute: typeof PuppiesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/puppies/$slug': {
       id: '/puppies/$slug'
-      path: '/$slug'
+      path: '/puppies/$slug'
       fullPath: '/puppies/$slug'
       preLoaderRoute: typeof PuppiesSlugRouteImport
-      parentRoute: typeof PuppiesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -456,17 +457,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface PuppiesRouteChildren {
-  PuppiesSlugRoute: typeof PuppiesSlugRoute
-}
-
-const PuppiesRouteChildren: PuppiesRouteChildren = {
-  PuppiesSlugRoute: PuppiesSlugRoute,
-}
-
-const PuppiesRouteWithChildren =
-  PuppiesRoute._addFileChildren(PuppiesRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -477,9 +467,10 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   GalleryRoute: GalleryRoute,
   HealthGuaranteeRoute: HealthGuaranteeRoute,
-  PuppiesRoute: PuppiesRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TestimonialsRoute: TestimonialsRoute,
+  PuppiesSlugRoute: PuppiesSlugRoute,
+  PuppiesIndexRoute: PuppiesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
