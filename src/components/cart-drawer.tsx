@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
@@ -6,9 +7,12 @@ import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { resolveImage } from "@/lib/images";
 import { formatPrice, SITE } from "@/lib/site";
+import { InquiryModal } from "@/components/inquiry-modal";
 
 export function CartDrawer() {
   const { items, open, setOpen, setQty, remove, subtotal, clear } = useCart();
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+
 
   const message = encodeURIComponent(
     `Hello Rachel Dachshunds — I'd like to inquire about:\n\n` +
