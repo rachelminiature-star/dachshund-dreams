@@ -78,8 +78,11 @@ export function CartDrawer() {
               </div>
               <p className="text-xs text-muted-foreground">A reservation deposit secures your puppy. Final balance is settled before pickup.</p>
               <div className="grid gap-2">
-                <Button asChild className="h-12 rounded-full bg-foreground text-background hover:bg-foreground/90">
-                  <Link to="/contact" onClick={() => setOpen(false)}>Complete inquiry</Link>
+                <Button
+                  onClick={() => setCheckoutOpen(true)}
+                  className="h-12 rounded-full bg-foreground text-background hover:bg-foreground/90"
+                >
+                  Checkout · {formatPrice(subtotal)}
                 </Button>
                 <a href={waUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-card text-sm font-medium text-foreground hover:bg-accent">
                   Send via WhatsApp
@@ -89,6 +92,16 @@ export function CartDrawer() {
           </>
         )}
       </SheetContent>
+
+      <InquiryModal
+        items={items.map((i) => ({
+          id: i.id, name: i.name, slug: i.slug, color: i.color, gender: i.gender,
+          price_cents: i.price_cents, image: i.image, qty: i.qty,
+        }))}
+        open={checkoutOpen}
+        onOpenChange={setCheckoutOpen}
+        onSubmitted={() => { clear(); setOpen(false); }}
+      />
     </Sheet>
   );
 }
