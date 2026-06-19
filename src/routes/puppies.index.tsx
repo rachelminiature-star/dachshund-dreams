@@ -8,7 +8,7 @@ import { PuppyCard } from "./index";
 import { puppiesQuery } from "@/lib/queries";
 import { SITE } from "@/lib/site";
 
-export const Route = createFileRoute("/puppies")({
+export const Route = createFileRoute("/puppies/")({
   head: () => ({
     meta: [
       { title: "Available Puppies — Rachel Miniature Dachshunds" },
