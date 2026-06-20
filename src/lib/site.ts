@@ -15,7 +15,7 @@ export const SITE = {
     facebook: "https://facebook.com",
   },
   formSubmitUrl: "https://formsubmit.co/ajax/info@rachelminiaturedachshunds.com",
-} as const;
+};
 
 export const NAV_LINKS = [
   { to: "/", label: "Home" },
