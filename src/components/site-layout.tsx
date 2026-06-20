@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { SiteNav } from "./site-nav";
 import { SiteFooter } from "./site-footer";
-import { FloatingWhatsApp, BackToTop } from "./floating-buttons";
+import { BackToTop } from "./floating-buttons";
 
 export function SiteLayout({
   children,
@@ -17,7 +17,6 @@ export function SiteLayout({
         {children}
       </main>
       <SiteFooter />
-      <FloatingWhatsApp />
       <BackToTop />
     </>
   );

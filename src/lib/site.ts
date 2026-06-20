@@ -3,9 +3,10 @@ export const SITE = {
   shortName: "Rachel Dachshunds",
   domain: "rachelminiaturedachshunds.com",
   email: "info@rachelminiaturedachshunds.com",
-  phone: "+1 (000) 000-0000",
-  whatsappNumber: "100000000", // placeholder per user request
-  whatsappUrl: "https://wa.me/100000000",
+  phone: "+1 (555) 000-0000",
+  phoneTel: "+15550000000",
+  get phoneCallUrl() { return `tel:${this.phoneTel}`; },
+  get phoneSmsUrl() { return `sms:${this.phoneTel}`; },
   tagline: "Heirloom miniature dachshunds, raised in our home.",
   description:
     "AKC-registered miniature dachshund puppies raised with love, health-tested, and matched to families who'll love them forever. Long-haired, short-haired, English cream, red, and rare coats.",
@@ -21,6 +22,7 @@ export const NAV_LINKS = [
   { to: "/puppies", label: "Puppies" },
   { to: "/about", label: "About" },
   { to: "/gallery", label: "Gallery" },
+  { to: "/reviews", label: "Reviews" },
   { to: "/adoption-process", label: "Process" },
   { to: "/health-guarantee", label: "Health" },
   { to: "/faq", label: "FAQ" },
