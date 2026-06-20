@@ -50,9 +50,15 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href={SITE.whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-foreground hover:text-sand">
+                <a href={SITE.phoneCallUrl} className="flex items-center gap-2 text-foreground hover:text-sand">
                   <Phone className="h-4 w-4" />
-                  WhatsApp message
+                  Call {SITE.phone}
+                </a>
+              </li>
+              <li>
+                <a href={SITE.phoneSmsUrl} className="flex items-center gap-2 text-foreground hover:text-sand">
+                  <Phone className="h-4 w-4" />
+                  Text {SITE.phone}
                 </a>
               </li>
               <li className="text-muted-foreground">
