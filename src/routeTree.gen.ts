@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as HealthGuaranteeRouteImport } from './routes/health-guarantee'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -38,6 +39,11 @@ const TestimonialsRoute = TestimonialsRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HealthGuaranteeRoute = HealthGuaranteeRouteImport.update({
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/health-guarantee': typeof HealthGuaranteeRoute
+  '/reviews': typeof ReviewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/health-guarantee': typeof HealthGuaranteeRoute
+  '/reviews': typeof ReviewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/testimonials': typeof TestimonialsRoute
   '/puppies/$slug': typeof PuppiesSlugRoute
@@ -186,6 +194,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/health-guarantee': typeof HealthGuaranteeRoute
+  '/reviews': typeof ReviewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/testimonials': typeof TestimonialsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -209,6 +218,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/health-guarantee'
+    | '/reviews'
     | '/sitemap.xml'
     | '/testimonials'
     | '/admin'
@@ -230,6 +240,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/health-guarantee'
+    | '/reviews'
     | '/sitemap.xml'
     | '/testimonials'
     | '/puppies/$slug'
@@ -251,6 +262,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/gallery'
     | '/health-guarantee'
+    | '/reviews'
     | '/sitemap.xml'
     | '/testimonials'
     | '/_authenticated/admin'
@@ -274,6 +286,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   GalleryRoute: typeof GalleryRoute
   HealthGuaranteeRoute: typeof HealthGuaranteeRoute
+  ReviewsRoute: typeof ReviewsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TestimonialsRoute: typeof TestimonialsRoute
   PuppiesSlugRoute: typeof PuppiesSlugRoute
@@ -294,6 +307,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/health-guarantee': {
@@ -467,6 +487,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   GalleryRoute: GalleryRoute,
   HealthGuaranteeRoute: HealthGuaranteeRoute,
+  ReviewsRoute: ReviewsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TestimonialsRoute: TestimonialsRoute,
   PuppiesSlugRoute: PuppiesSlugRoute,

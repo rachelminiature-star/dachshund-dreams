@@ -62,8 +62,8 @@ function ContactPage() {
           <div className="mt-16 grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
             <aside className="space-y-5">
               <ContactItem icon={Mail} label="Email" value={SITE.email} href={`mailto:${SITE.email}`} />
-              <ContactItem icon={MessageCircle} label="WhatsApp" value="Send a message" href={SITE.whatsappUrl} external />
-              <ContactItem icon={Phone} label="Phone" value="Available on request" />
+              <ContactItem icon={Phone} label="Call" value={SITE.phone} href={SITE.phoneCallUrl} />
+              <ContactItem icon={MessageCircle} label="Text" value={SITE.phone} href={SITE.phoneSmsUrl} />
               <ContactItem icon={MapPin} label="Visits" value="By appointment after application approval" />
               <div className="rounded-3xl bg-surface p-6 text-sm text-muted-foreground">
                 <p className="font-display text-xl text-foreground">Response time</p>

@@ -178,14 +178,20 @@ export function SiteNav({ transparentOnTop = false }: { transparentOnTop?: boole
                 >
                   Inquire about a puppy
                 </Link>
-                <a
-                  href={SITE.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-12 w-full items-center justify-center rounded-full border border-border bg-card text-sm font-medium text-foreground"
-                >
-                  Message on WhatsApp
-                </a>
+                <div className="grid grid-cols-2 gap-2">
+                  <a
+                    href={SITE.phoneCallUrl}
+                    className="flex h-12 items-center justify-center rounded-full border border-border bg-card text-sm font-medium text-foreground"
+                  >
+                    Call
+                  </a>
+                  <a
+                    href={SITE.phoneSmsUrl}
+                    className="flex h-12 items-center justify-center rounded-full border border-border bg-card text-sm font-medium text-foreground"
+                  >
+                    Text
+                  </a>
+                </div>
               </div>
             </div>
           </motion.div>
