@@ -19,7 +19,7 @@ export function CartDrawer() {
     items.map((i) => `• ${i.name} (${i.color ?? ""}) — ${formatPrice(i.price_cents)}`).join("\n") +
     `\n\nTotal: ${formatPrice(subtotal)}`
   );
-  const smsUrl = `${SITE.phoneSmsUrl}?&body=${message}`;
+  const mailUrl = `mailto:${SITE.email}?subject=${encodeURIComponent("Cart inquiry")}&body=${message}`;
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
