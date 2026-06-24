@@ -192,16 +192,10 @@ function PuppyDetail() {
                   Add to cart
                 </Button>
                 <a
-                  href={SITE.phoneCallUrl}
+                  href={`mailto:${SITE.email}?subject=${encodeURIComponent(`Inquiry: ${p.name}`)}&body=${encodeURIComponent(`Hi, I'm interested in ${p.name} (${p.color}) — ${formatPrice(p.price_cents)}.`)}`}
                   className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-card px-7 text-sm font-medium text-foreground hover:bg-accent"
                 >
-                  Call
-                </a>
-                <a
-                  href={`${SITE.phoneSmsUrl}?&body=${encodeURIComponent(`Hi, I'm interested in ${p.name} (${p.color}) — ${formatPrice(p.price_cents)}.`)}`}
-                  className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-card px-7 text-sm font-medium text-foreground hover:bg-accent"
-                >
-                  Text
+                  Email us
                 </a>
               </div>
 
