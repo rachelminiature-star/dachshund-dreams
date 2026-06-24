@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Facebook, Mail, Phone } from "lucide-react";
+import { Instagram, Facebook, Mail, MessageCircle } from "lucide-react";
 import { NAV_LINKS, SITE } from "@/lib/site";
 
 export function SiteFooter() {
