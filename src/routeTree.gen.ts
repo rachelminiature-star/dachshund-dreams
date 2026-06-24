@@ -15,6 +15,7 @@ import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as HealthGuaranteeRouteImport } from './routes/health-guarantee'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ContractRouteImport } from './routes/contract'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdoptionProcessRouteImport } from './routes/adoption-process'
@@ -59,6 +60,11 @@ const GalleryRoute = GalleryRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContractRoute = ContractRouteImport.update({
+  id: '/contract',
+  path: '/contract',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -146,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/adoption-process': typeof AdoptionProcessRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/contract': typeof ContractRoute
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/health-guarantee': typeof HealthGuaranteeRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/adoption-process': typeof AdoptionProcessRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/contract': typeof ContractRoute
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/health-guarantee': typeof HealthGuaranteeRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/adoption-process': typeof AdoptionProcessRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/contract': typeof ContractRoute
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/health-guarantee': typeof HealthGuaranteeRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/adoption-process'
     | '/auth'
     | '/contact'
+    | '/contract'
     | '/faq'
     | '/gallery'
     | '/health-guarantee'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/adoption-process'
     | '/auth'
     | '/contact'
+    | '/contract'
     | '/faq'
     | '/gallery'
     | '/health-guarantee'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/adoption-process'
     | '/auth'
     | '/contact'
+    | '/contract'
     | '/faq'
     | '/gallery'
     | '/health-guarantee'
@@ -283,6 +295,7 @@ export interface RootRouteChildren {
   AdoptionProcessRoute: typeof AdoptionProcessRoute
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
+  ContractRoute: typeof ContractRoute
   FaqRoute: typeof FaqRoute
   GalleryRoute: typeof GalleryRoute
   HealthGuaranteeRoute: typeof HealthGuaranteeRoute
@@ -335,6 +348,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contract': {
+      id: '/contract'
+      path: '/contract'
+      fullPath: '/contract'
+      preLoaderRoute: typeof ContractRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -484,6 +504,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdoptionProcessRoute: AdoptionProcessRoute,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
+  ContractRoute: ContractRoute,
   FaqRoute: FaqRoute,
   GalleryRoute: GalleryRoute,
   HealthGuaranteeRoute: HealthGuaranteeRoute,
