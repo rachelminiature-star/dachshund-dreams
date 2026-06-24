@@ -1,8 +1,8 @@
 export const SITE = {
   name: "Rachel Miniature Dachshunds",
   shortName: "Rachel Dachshunds",
-  domain: "rachelminiaturedachshunds.com",
-  email: "info@rachelminiaturedachshunds.com",
+  domain: "rachelminiaturedaschunds.com",
+  email: "info@rachelminiaturedaschunds.com",
   phone: "+1 (555) 000-0000",
   phoneTel: "+15550000000",
   get phoneCallUrl() { return `tel:${this.phoneTel}`; },
@@ -14,7 +14,7 @@ export const SITE = {
     instagram: "https://instagram.com",
     facebook: "https://facebook.com",
   },
-  formSubmitUrl: "https://formsubmit.co/ajax/info@rachelminiaturedachshunds.com",
+  formSubmitUrl: "https://formsubmit.co/ajax/info@rachelminiaturedaschunds.com",
 };
 
 export const NAV_LINKS = [
