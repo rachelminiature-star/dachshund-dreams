@@ -3,10 +3,6 @@ export const SITE = {
   shortName: "Rachel Dachshunds",
   domain: "rachelminiaturedaschunds.com",
   email: "info@rachelminiaturedaschunds.com",
-  phone: "+1 (555) 000-0000",
-  phoneTel: "+15550000000",
-  get phoneCallUrl() { return `tel:${this.phoneTel}`; },
-  get phoneSmsUrl() { return `sms:${this.phoneTel}`; },
   tagline: "Heirloom miniature dachshunds, raised in our home.",
   description:
     "AKC-registered miniature dachshund puppies raised with love, health-tested, and matched to families who'll love them forever. Long-haired, short-haired, English cream, red, and rare coats.",
@@ -25,6 +21,7 @@ export const NAV_LINKS = [
   { to: "/reviews", label: "Reviews" },
   { to: "/adoption-process", label: "Process" },
   { to: "/health-guarantee", label: "Health" },
+  { to: "/contract", label: "Contract" },
   { to: "/faq", label: "FAQ" },
   { to: "/contact", label: "Contact" },
 ] as const;

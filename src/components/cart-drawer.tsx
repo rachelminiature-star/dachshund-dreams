@@ -19,7 +19,7 @@ export function CartDrawer() {
     items.map((i) => `• ${i.name} (${i.color ?? ""}) — ${formatPrice(i.price_cents)}`).join("\n") +
     `\n\nTotal: ${formatPrice(subtotal)}`
   );
-  const smsUrl = `${SITE.phoneSmsUrl}?&body=${message}`;
+  const mailUrl = `mailto:${SITE.email}?subject=${encodeURIComponent("Cart inquiry")}&body=${message}`;
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -84,14 +84,9 @@ export function CartDrawer() {
                 >
                   Checkout · {formatPrice(subtotal)}
                 </Button>
-                <div className="grid grid-cols-2 gap-2">
-                  <a href={SITE.phoneCallUrl} className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-card text-sm font-medium text-foreground hover:bg-accent">
-                    Call
-                  </a>
-                  <a href={smsUrl} className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-card text-sm font-medium text-foreground hover:bg-accent">
-                    Text us
-                  </a>
-                </div>
+                <a href={mailUrl} className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-card text-sm font-medium text-foreground hover:bg-accent">
+                  Email us instead
+                </a>
               </div>
             </div>
           </>

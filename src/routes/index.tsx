@@ -577,11 +577,8 @@ function ContactCTA() {
             <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-medium text-foreground transition-transform hover:scale-[1.03]">
               Begin your inquiry <ArrowRight className="h-4 w-4" />
             </Link>
-            <a href={SITE.phoneCallUrl} className="inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 text-sm font-medium text-white hover:bg-white/15">
-              Call {SITE.phone}
-            </a>
-            <a href={SITE.phoneSmsUrl} className="inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 text-sm font-medium text-white hover:bg-white/15">
-              Text us
+            <a href={`mailto:${SITE.email}`} className="inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 text-sm font-medium text-white hover:bg-white/15">
+              Email {SITE.email}
             </a>
           </div>
         </div>

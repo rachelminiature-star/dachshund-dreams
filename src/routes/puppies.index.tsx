@@ -73,8 +73,7 @@ function PuppiesPage() {
           <div className="my-24 text-center">
             <p className="font-display text-2xl text-foreground">Looking for something specific?</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              <a href={SITE.phoneCallUrl} className="inline-flex rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background">Call {SITE.phone}</a>
-              <a href={SITE.phoneSmsUrl} className="inline-flex rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-foreground">Text us</a>
+              <a href={`mailto:${SITE.email}`} className="inline-flex rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background">Email {SITE.email}</a>
             </div>
           </div>
         </div>

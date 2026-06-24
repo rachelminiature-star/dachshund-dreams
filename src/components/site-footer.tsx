@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Facebook, Mail, Phone } from "lucide-react";
+import { Instagram, Facebook, Mail, MessageCircle } from "lucide-react";
 import { NAV_LINKS, SITE } from "@/lib/site";
 
 export function SiteFooter() {
@@ -49,17 +49,9 @@ export function SiteFooter() {
                   {SITE.email}
                 </a>
               </li>
-              <li>
-                <a href={SITE.phoneCallUrl} className="flex items-center gap-2 text-foreground hover:text-sand">
-                  <Phone className="h-4 w-4" />
-                  Call {SITE.phone}
-                </a>
-              </li>
-              <li>
-                <a href={SITE.phoneSmsUrl} className="flex items-center gap-2 text-foreground hover:text-sand">
-                  <Phone className="h-4 w-4" />
-                  Text {SITE.phone}
-                </a>
+              <li className="flex items-center gap-2 text-foreground">
+                <MessageCircle className="h-4 w-4" />
+                Live chat available on every page
               </li>
               <li className="text-muted-foreground">
                 Responses within 24 hours, 7 days a week.
