@@ -15,7 +15,7 @@ export const Route = createFileRoute("/adoption-process")({
   component: () => {
     const steps = [
       { n: "01", t: "Submit an application", d: "Share your family, home, and the puppy you're looking for. We read every application personally." },
-      { n: "02", t: "Meet on a call", d: "A short video or phone call so we can both make sure it's a wonderful fit." },
+      { n: "02", t: "Get to know each other", d: "A short email or live chat conversation so we can both make sure it's a wonderful fit." },
       { n: "03", t: "Reserve your puppy", d: "A $1,000 deposit secures your puppy and applies to the final adoption fee." },
       { n: "04", t: "Weekly updates", d: "You'll receive weekly photos and milestones until your puppy is ready to come home." },
       { n: "05", t: "Pickup day", d: "Visit our home at 8-10 weeks. Your puppy goes home with a starter pack and full breeder support." },
