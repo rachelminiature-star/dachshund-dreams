@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Loader2, Mail, MapPin, Phone, MessageCircle, CheckCircle2 } from "lucide-react";
+import { Loader2, Mail, MapPin, MessageCircle, CheckCircle2 } from "lucide-react";
 import { SiteLayout } from "@/components/site-layout";
 import { SectionHeader } from "@/components/section-header";
 import { SITE } from "@/lib/site";
