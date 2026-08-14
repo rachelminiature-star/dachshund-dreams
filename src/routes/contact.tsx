@@ -30,7 +30,6 @@ function ContactPage() {
     const payload = {
       name: String(fd.get("name") ?? ""),
       email: String(fd.get("email") ?? ""),
-      phone: String(fd.get("phone") ?? ""),
       subject: String(fd.get("subject") ?? ""),
       body: String(fd.get("body") ?? ""),
       honeypot: String(fd.get("_honey") ?? ""),
@@ -86,7 +85,6 @@ function ContactPage() {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <Field label="Your name" name="name" required />
                     <Field label="Email" name="email" type="email" required />
-                    <Field label="Phone (optional)" name="phone" type="tel" />
                     <Field label="Subject (optional)" name="subject" />
                   </div>
                   <Field label="Tell us about your family & what you're looking for" name="body" textarea required />

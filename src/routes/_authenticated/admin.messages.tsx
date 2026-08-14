@@ -49,7 +49,7 @@ function MessagesPage() {
                 </div>
                 <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
                   <a href={`mailto:${m.email}`} className="inline-flex items-center gap-1 hover:text-foreground"><Mail className="h-3 w-3" />{m.email}</a>
-                  {m.phone && <a href={`tel:${m.phone}`} className="inline-flex items-center gap-1 hover:text-foreground"><Phone className="h-3 w-3" />{m.phone}</a>}
+                  {m.phone && <span className="inline-flex items-center gap-1"><Phone className="h-3 w-3" />{m.phone}</span>}
                   <span>{formatDistanceToNow(new Date(m.created_at), { addSuffix: true })}</span>
                 </div>
                 {m.subject && <div className="mt-2 text-sm font-medium">{m.subject}</div>}

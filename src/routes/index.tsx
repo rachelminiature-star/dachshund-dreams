@@ -386,7 +386,7 @@ function BreederStory() {
 function ProcessSection() {
   const steps = [
     { n: "01", t: "Submit an application", d: "Tell us about your family, home, and the puppy you're hoping to find. We read every word." },
-    { n: "02", t: "Meet on a call", d: "We schedule a video or phone call to make sure it's the right fit — both ways." },
+    { n: "02", t: "Get to know each other", d: "We chat by email or live chat to make sure it's the right fit — both ways." },
     { n: "03", t: "Reserve your puppy", d: "A $1,000 deposit secures your puppy. We send weekly photos and updates until pickup." },
     { n: "04", t: "Bring them home", d: "At 8-10 weeks your puppy goes home with a complete starter pack and lifetime support." },
   ];

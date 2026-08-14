@@ -185,7 +185,6 @@ function ContractForm() {
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="sm:col-span-2"><FormField label="Full name" name="buyer_name" required /></div>
           <FormField label="Email" name="buyer_email" type="email" required />
-          <FormField label="Phone number" name="buyer_phone" type="tel" required />
           <div className="sm:col-span-2"><FormField label="Street address" name="buyer_address" required /></div>
           <FormField label="City" name="buyer_city" required />
           <FormField label="State" name="buyer_state" required />
