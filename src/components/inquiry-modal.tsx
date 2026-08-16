@@ -40,7 +40,7 @@ export function InquiryModal(props: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const [form, setForm] = useState({
-    name: "", email: "", address: "", city: "", country: "", message: "",
+    name: "", email: "", phone: "", address: "", city: "", country: "", message: "",
   });
 
   const lines: CartLine[] = useMemo(() => {
@@ -69,8 +69,8 @@ export function InquiryModal(props: Props) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name.trim() || !form.email.trim()) {
-      toast.error("Please fill in your name and email");
+    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
+      toast.error("Please fill in your name, email and phone number");
       return;
     }
     setSubmitting(true);
@@ -91,6 +91,7 @@ export function InquiryModal(props: Props) {
           total: formatPrice(total),
           name: form.name,
           email: form.email,
+          phone: form.phone,
           address: form.address,
           city: form.city,
           country: form.country,
@@ -156,6 +157,7 @@ export function InquiryModal(props: Props) {
             <form onSubmit={submit} className="grid gap-4 px-6 py-6 sm:grid-cols-2">
               <Field label="Full name *"><Input required value={form.name} onChange={(e) => update("name", e.target.value)} /></Field>
               <Field label="Email *"><Input required type="email" value={form.email} onChange={(e) => update("email", e.target.value)} /></Field>
+              <Field label="Phone *"><Input required type="tel" value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="+1 555 000 0000" /></Field>
               <Field label="Country"><Input value={form.country} onChange={(e) => update("country", e.target.value)} /></Field>
               <div className="sm:col-span-2"><Field label="Address"><Input value={form.address} onChange={(e) => update("address", e.target.value)} placeholder="Street address" /></Field></div>
               <Field label="City"><Input value={form.city} onChange={(e) => update("city", e.target.value)} /></Field>
