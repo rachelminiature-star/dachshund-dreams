@@ -30,6 +30,7 @@ function ContactPage() {
     const payload = {
       name: String(fd.get("name") ?? ""),
       email: String(fd.get("email") ?? ""),
+      phone: String(fd.get("phone") ?? ""),
       subject: String(fd.get("subject") ?? ""),
       body: String(fd.get("body") ?? ""),
       honeypot: String(fd.get("_honey") ?? ""),
