@@ -40,7 +40,7 @@ export function InquiryModal(props: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const [form, setForm] = useState({
-    name: "", email: "", address: "", city: "", country: "", message: "",
+    name: "", email: "", phone: "", address: "", city: "", country: "", message: "",
   });
 
   const lines: CartLine[] = useMemo(() => {
@@ -69,8 +69,8 @@ export function InquiryModal(props: Props) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name.trim() || !form.email.trim()) {
-      toast.error("Please fill in your name and email");
+    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
+      toast.error("Please fill in your name, email and phone number");
       return;
     }
     setSubmitting(true);
@@ -91,6 +91,7 @@ export function InquiryModal(props: Props) {
           total: formatPrice(total),
           name: form.name,
           email: form.email,
+          phone: form.phone,
           address: form.address,
           city: form.city,
           country: form.country,

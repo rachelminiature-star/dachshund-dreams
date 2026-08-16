@@ -86,6 +86,7 @@ function ContactPage() {
                   <div className="grid gap-5 sm:grid-cols-2">
                     <Field label="Your name" name="name" required />
                     <Field label="Email" name="email" type="email" required />
+                    <Field label="Phone number" name="phone" type="tel" required />
                     <Field label="Subject (optional)" name="subject" />
                   </div>
                   <Field label="Tell us about your family & what you're looking for" name="body" textarea required />
