@@ -207,7 +207,8 @@ function TrustStrip() {
 
 function FeaturedPuppies() {
   const { data } = useSuspenseQuery(puppiesQuery());
-  const puppies = (data?.data ?? []).filter((p: any) => p.status !== "sold").slice(0, 6);
+  const puppies = (data?.data ?? []).filter((p: any) => p.status !== "sold");
+
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
