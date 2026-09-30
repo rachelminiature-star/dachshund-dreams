@@ -58,7 +58,7 @@ export function InquiryModal(props: Props) {
   const total = lines.reduce((s, l) => s + l.price_cents * l.qty, 0);
   const heading = isCart
     ? `Checkout — ${lines.length} ${lines.length === 1 ? "puppy" : "puppies"}`
-    : `Inquire about ${lines[0]?.name}`;
+    : `Purchase ${lines[0]?.name}`;
   const subject = isCart
     ? `Checkout inquiry: ${lines.map((l) => l.name).join(", ")}`
     : `Inquiry: ${lines[0]?.name} (${lines[0]?.color})`;
@@ -202,7 +202,7 @@ export function InquiryModal(props: Props) {
                 <button type="button" onClick={() => close(false)} className="text-sm text-muted-foreground hover:text-foreground">Cancel</button>
                 <Button type="submit" disabled={submitting} className="h-12 rounded-full px-8 bg-foreground text-background hover:bg-foreground/90">
                   {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isCart ? "Submit checkout" : "Send inquiry"}
+                  {isCart ? "Submit checkout" : "Submit purchase request"}
                 </Button>
               </div>
             </form>
