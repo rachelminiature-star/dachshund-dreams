@@ -91,3 +91,24 @@ export const submitMessage = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+// Best-effort email forwarding. Runs server-side so the browser never sees a
+// CORS / network failure from the third-party email relay.
+export const forwardEmail = createServerFn({ method: "POST" })
+  .inputValidator((input) =>
+    z.object({ payload: z.record(z.string(), z.string()).and(z.object({})) }).parse(input)
+  )
+  .handler(async ({ data }) => {
+    const to = "info@rachelminiaturedaschunds.com";
+    try {
+      const res = await fetch(`https://formsubmit.co/ajax/${to}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ _captcha: "false", _template: "table", ...data.payload }),
+      });
+      if (!res.ok) return { ok: false, error: `Email relay returned ${res.status}` };
+      return { ok: true, error: null };
+    } catch (err: any) {
+      return { ok: false, error: err?.message ?? "Email relay unreachable" };
+    }
+  });
