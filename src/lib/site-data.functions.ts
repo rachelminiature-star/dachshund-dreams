@@ -92,34 +92,3 @@ export const submitMessage = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
-// Best-effort email forwarding via Web3Forms. Runs server-side so the browser
-// never sees a CORS / network failure from the third-party email relay.
-const WEB3FORMS_ACCESS_KEY = "b3da3eca-66b7-45f0-b9d1-1be7e78d3b30";
-
-export const forwardEmail = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
-    z.object({ payload: z.record(z.string(), z.string()).and(z.object({})) }).parse(input)
-  )
-  .handler(async ({ data }) => {
-    const { _subject, ...rest } = data.payload as Record<string, string>;
-    try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          subject: _subject || "New website submission",
-          from_name: "Rachel Miniature Dachshunds",
-          ...rest,
-        }),
-      });
-      const json = (await res.json().catch(() => null)) as { success?: boolean; message?: string } | null;
-      if (!res.ok || !json?.success) {
-        return { ok: false, error: json?.message ?? `Email relay returned ${res.status}` };
-      }
-      return { ok: true, error: null };
-    } catch (err: any) {
-      return { ok: false, error: err?.message ?? "Email relay unreachable" };
-    }
-  });
-
