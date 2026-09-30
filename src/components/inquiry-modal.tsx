@@ -79,31 +79,61 @@ export function InquiryModal(props: Props) {
         [`item_${i + 1}`]: `${l.name} · ${l.color ?? ""}${l.gender ? ` · ${l.gender === "male" ? "Boy" : "Girl"}` : ""} · Qty ${l.qty} · ${formatPrice(l.price_cents * l.qty)} · https://${SITE.domain}/puppies/${l.slug}`,
       })).reduce((acc, cur) => ({ ...acc, ...cur }), {} as Record<string, string>);
 
-      const res = await fetch(SITE.formSubmitUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          _subject: subject,
-          _template: "table",
-          _captcha: "false",
-          inquiry_type: isCart ? "Cart checkout" : "Single puppy",
-          ...itemsSummary,
-          total: formatPrice(total),
+      const itemsText = Object.values(itemsSummary).join("\n");
+      const body = [
+        form.message || defaultMessage,
+        "",
+        "--- Order details ---",
+        itemsText,
+        `Total: ${formatPrice(total)}`,
+        "",
+        "--- Buyer details ---",
+        `Address: ${form.address || "—"}`,
+        `City: ${form.city || "—"}`,
+        `Country: ${form.country || "—"}`,
+      ].join("\n");
+
+      // 1. Always record the inquiry in the database first — this is the
+      //    source of truth and shows up in the admin Messages panel.
+      await submitMessage({
+        data: {
           name: form.name,
           email: form.email,
           phone: form.phone,
-          address: form.address,
-          city: form.city,
-          country: form.country,
-          message: form.message || defaultMessage,
-        }),
+          subject,
+          body,
+          puppy_id: !isCart && lines[0] ? lines[0].id : null,
+        },
       });
-      if (!res.ok) throw new Error(`Submission failed (${res.status})`);
+
+      // 2. Best-effort email notification; never blocks the buyer.
+      try {
+        await forwardEmail({
+          data: {
+            payload: {
+              _subject: subject,
+              inquiry_type: isCart ? "Cart checkout" : "Single puppy",
+              ...itemsSummary,
+              total: formatPrice(total),
+              name: form.name,
+              email: form.email,
+              phone: form.phone,
+              address: form.address,
+              city: form.city,
+              country: form.country,
+              message: form.message || defaultMessage,
+            },
+          },
+        });
+      } catch {
+        /* email relay is optional */
+      }
+
       setDone(true);
       toast.success("Inquiry sent — we'll be in touch shortly.");
       onSubmitted?.();
     } catch (err: any) {
-      toast.error(err.message || "Could not send inquiry");
+      toast.error(err?.message || "Could not send inquiry. Please try again.");
     } finally {
       setSubmitting(false);
     }
