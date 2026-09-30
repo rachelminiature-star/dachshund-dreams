@@ -4,7 +4,7 @@ import { Loader2, Mail, MapPin, MessageCircle, CheckCircle2 } from "lucide-react
 import { SiteLayout } from "@/components/site-layout";
 import { SectionHeader } from "@/components/section-header";
 import { SITE } from "@/lib/site";
-import { submitMessage } from "@/lib/site-data.functions";
+import { submitMessage, forwardEmail } from "@/lib/site-data.functions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -37,12 +37,18 @@ function ContactPage() {
     };
     try {
       await submitMessage({ data: payload });
-      // Also email via FormSubmit (best-effort)
+      // Best-effort email notification; never blocks the visitor.
       try {
-        await fetch(SITE.formSubmitUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(payload),
+        await forwardEmail({
+          data: {
+            payload: {
+              _subject: payload.subject || `New message from ${payload.name}`,
+              name: payload.name,
+              email: payload.email,
+              phone: payload.phone,
+              message: payload.body,
+            },
+          },
         });
       } catch {}
       setStatus("ok");
