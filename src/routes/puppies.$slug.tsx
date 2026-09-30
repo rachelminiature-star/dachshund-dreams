@@ -179,7 +179,7 @@ function PuppyDetail() {
                   className="h-12 rounded-full bg-foreground px-7 text-sm font-medium text-background hover:bg-foreground/90"
                 >
                   <MessageCircle className="mr-2 h-4 w-4" />
-                  {sold ? "Sold" : `Inquire about ${p.name}`}
+                  {sold ? "Sold" : `Purchase ${p.name}`}
                 </Button>
                 <Button
                   size="lg"
