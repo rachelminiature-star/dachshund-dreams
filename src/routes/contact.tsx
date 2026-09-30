@@ -4,7 +4,7 @@ import { Loader2, Mail, MapPin, MessageCircle, CheckCircle2 } from "lucide-react
 import { SiteLayout } from "@/components/site-layout";
 import { SectionHeader } from "@/components/section-header";
 import { SITE } from "@/lib/site";
-import { submitMessage } from "@/lib/site-data.functions";
+import { submitMessage, forwardEmail } from "@/lib/site-data.functions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
