@@ -134,16 +134,33 @@ function ContractForm() {
 
     setSubmitting(true);
     try {
-      const res = await fetch(SITE.formSubmitUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(payload),
+      const body = Object.entries(payload)
+        .filter(([k]) => !k.startsWith("_"))
+        .map(([k, v]) => `${k.replace(/_/g, " ")}: ${v || "—"}`)
+        .join("\n");
+
+      // Record the signed contract in the database first.
+      await submitMessage({
+        data: {
+          name: String(payload.buyer_name || "Unknown"),
+          email: String(payload.buyer_email || ""),
+          phone: String(payload.buyer_phone || ""),
+          subject: String(payload._subject),
+          body,
+        },
       });
-      if (!res.ok) throw new Error(`Submission failed (${res.status})`);
+
+      // Best-effort email copy.
+      try {
+        await forwardEmail({ data: { payload } });
+      } catch {
+        /* email relay is optional */
+      }
+
       setDone(true);
       toast.success("Contract submitted — we'll countersign and email you a copy.");
     } catch (err: any) {
-      toast.error(err?.message || "Could not submit contract");
+      toast.error(err?.message || "Could not submit contract. Please try again.");
     } finally {
       setSubmitting(false);
     }
