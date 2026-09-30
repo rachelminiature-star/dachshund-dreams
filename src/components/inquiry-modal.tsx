@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { resolveImage } from "@/lib/images";
 import { formatPrice, SITE } from "@/lib/site";
+import { submitMessage, forwardEmail } from "@/lib/site-data.functions";
 import { toast } from "sonner";
 import { Loader2, CheckCircle2 } from "lucide-react";
 
