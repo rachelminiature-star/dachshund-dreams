@@ -10,16 +10,17 @@ export async function forwardEmail({
 }): Promise<{ ok: boolean; error: string | null }> {
   const { _subject, ...rest } = data.payload;
   try {
+    // FormData keeps this a "simple" request (no CORS preflight).
+    const fd = new FormData();
+    fd.append("access_key", WEB3FORMS_ACCESS_KEY);
+    fd.append("subject", _subject || "New website submission");
+    fd.append("from_name", "Rachel Miniature Dachshunds");
+    for (const [k, v] of Object.entries(rest)) fd.append(k, v ?? "");
     const res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_ACCESS_KEY,
-        subject: _subject || "New website submission",
-        from_name: "Rachel Miniature Dachshunds",
-        ...rest,
-      }),
+      body: fd,
     });
+
     const json = (await res.json().catch(() => null)) as
       | { success?: boolean; message?: string }
       | null;
