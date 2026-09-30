@@ -9,8 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { submitMessage } from "@/lib/site-data.functions";
-import { forwardEmail } from "@/lib/email";
+import { submitMessage, forwardEmail } from "@/lib/site-data.functions";
 
 export const Route = createFileRoute("/contract")({
   head: () => ({
