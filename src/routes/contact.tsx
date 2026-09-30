@@ -37,12 +37,18 @@ function ContactPage() {
     };
     try {
       await submitMessage({ data: payload });
-      // Also email via FormSubmit (best-effort)
+      // Best-effort email notification; never blocks the visitor.
       try {
-        await fetch(SITE.formSubmitUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(payload),
+        await forwardEmail({
+          data: {
+            payload: {
+              _subject: payload.subject || `New message from ${payload.name}`,
+              name: payload.name,
+              email: payload.email,
+              phone: payload.phone,
+              message: payload.body,
+            },
+          },
         });
       } catch {}
       setStatus("ok");
