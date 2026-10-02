@@ -278,14 +278,14 @@ export function PuppyCard({ puppy }: { puppy: any }) {
         <Link
           to="/puppies/$slug"
           params={{ slug: puppy.slug }}
-          className="inline-flex flex-1 items-center justify-center rounded-full border border-border bg-card px-4 py-2.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+          className="inline-flex min-w-0 flex-1 items-center justify-center rounded-full border border-border bg-card px-3 py-2.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
         >
           View details
         </Link>
         <button
           onClick={() => setPurchaseOpen(true)}
           disabled={sold}
-          className="inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-full bg-foreground px-4 py-2.5 text-xs font-medium text-background transition-colors hover:bg-foreground/90 disabled:opacity-40"
+          className="inline-flex min-w-0 flex-1 items-center justify-center truncate rounded-full bg-foreground px-3 py-2.5 text-xs font-medium text-background transition-colors hover:bg-foreground/90 disabled:opacity-40"
         >
           Purchase {puppy.name}
         </button>
