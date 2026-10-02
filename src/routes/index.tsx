@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   ArrowRight,
   ShieldCheck,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import { SiteLayout } from "@/components/site-layout";
+import { InquiryModal } from "@/components/inquiry-modal";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion";
 import { SectionHeader, Eyebrow } from "@/components/section-header";
 import { puppiesQuery, testimonialsQuery, faqsQuery, galleryQuery } from "@/lib/queries";
