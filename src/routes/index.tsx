@@ -248,6 +248,8 @@ export function PuppyCard({ puppy }: { puppy: any }) {
     sold: "bg-muted text-muted-foreground",
   };
   const sold = puppy.status === "sold";
+  const [purchaseOpen, setPurchaseOpen] = useState(false);
+
   return (
     <div className="group relative overflow-hidden rounded-3xl bg-card shadow-soft ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-elegant">
       <Link to="/puppies/$slug" params={{ slug: puppy.slug }} className="block">
