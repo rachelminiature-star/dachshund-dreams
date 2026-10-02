@@ -29,11 +29,11 @@ export const Route = createFileRoute("/puppies/$slug")({
     links: [{ rel: "canonical", href: `/puppies/${params.slug}` }],
   }),
   component: PuppyDetail,
-  errorComponent: ({ error }) => (
+  errorComponent: ({ error }: { error: unknown }) => (
     <SiteLayout>
       <div className="mx-auto max-w-2xl px-6 py-40 text-center">
         <h1 className="font-display text-3xl">Something went wrong</h1>
-        <p className="mt-3 text-muted-foreground">{error.message}</p>
+        <p className="mt-3 text-muted-foreground">{error instanceof Error ? error.message : String(error)}</p>
         <Link to="/puppies" className="mt-6 inline-flex rounded-full bg-foreground px-6 py-3 text-sm text-background">Back to puppies</Link>
       </div>
     </SiteLayout>

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   ArrowRight,
   ShieldCheck,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import { SiteLayout } from "@/components/site-layout";
+import { InquiryModal } from "@/components/inquiry-modal";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion";
 import { SectionHeader, Eyebrow } from "@/components/section-header";
 import { puppiesQuery, testimonialsQuery, faqsQuery, galleryQuery } from "@/lib/queries";
@@ -247,6 +248,8 @@ export function PuppyCard({ puppy }: { puppy: any }) {
     sold: "bg-muted text-muted-foreground",
   };
   const sold = puppy.status === "sold";
+  const [purchaseOpen, setPurchaseOpen] = useState(false);
+
   return (
     <div className="group relative overflow-hidden rounded-3xl bg-card shadow-soft ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-elegant">
       <Link to="/puppies/$slug" params={{ slug: puppy.slug }} className="block">
@@ -275,10 +278,17 @@ export function PuppyCard({ puppy }: { puppy: any }) {
         <Link
           to="/puppies/$slug"
           params={{ slug: puppy.slug }}
-          className="inline-flex flex-1 items-center justify-center rounded-full bg-foreground px-4 py-2.5 text-xs font-medium text-background hover:bg-foreground/90"
+          className="inline-flex min-w-0 flex-1 items-center justify-center rounded-full border border-border bg-card px-3 py-2.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
         >
           View details
         </Link>
+        <button
+          onClick={() => setPurchaseOpen(true)}
+          disabled={sold}
+          className="inline-flex min-w-0 flex-1 items-center justify-center truncate rounded-full bg-foreground px-3 py-2.5 text-xs font-medium text-background transition-colors hover:bg-foreground/90 disabled:opacity-40"
+        >
+          Purchase {puppy.name}
+        </button>
         <button
           onClick={() => {
             if (sold) return;
@@ -292,6 +302,15 @@ export function PuppyCard({ puppy }: { puppy: any }) {
           <ShoppingBag className="h-4 w-4" />
         </button>
       </div>
+
+      <InquiryModal
+        puppy={{
+          id: puppy.id, name: puppy.name, slug: puppy.slug, color: puppy.color,
+          gender: puppy.gender, price_cents: puppy.price_cents, cover_image: puppy.cover_image,
+        }}
+        open={purchaseOpen}
+        onOpenChange={setPurchaseOpen}
+      />
     </div>
   );
 }
